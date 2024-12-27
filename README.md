@@ -3,6 +3,9 @@
 ## Overview & Demo Link
 A game Hog implemented by Python. 
 
+## Update Date
+Dec 2024
+
 ## Source of Stucture
 ucb61 a 2020
 
