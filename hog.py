@@ -22,8 +22,6 @@ def roll_dice(num_rolls, dice=six_sided):
     # These assert statements ensure that num_rolls is a positive integer.
     assert type(num_rolls) == int, 'num_rolls must be an integer.'
     assert num_rolls > 0, 'Must roll at least once.'
-    # BEGIN PROBLEM 1
-    "*** YOUR CODE HERE ***"
     rs_rolls = []
     for _ in range(num_rolls):
         rs_rolls.append(dice())
@@ -31,7 +29,6 @@ def roll_dice(num_rolls, dice=six_sided):
         return 1
     else:
         return sum(rs_rolls)
-    # END PROBLEM 1
 
 
 def free_bacon(score):
@@ -43,12 +40,10 @@ def free_bacon(score):
     pi = FIRST_101_DIGITS_OF_PI
 
     # Trim pi to only (score + 1) digit(s)
-    # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
     divisor = 10 ** (len(str(pi)) - (score + 1))
     pi = pi // divisor
     return pi % 10 + 3
-    # END PROBLEM 2
+
 
 
 def take_turn(num_rolls, opponent_score, dice=six_sided):
@@ -64,13 +59,11 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls >= 0, 'Cannot roll a negative number of dice in take_turn.'
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
-    # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
     if num_rolls == 0:
         return free_bacon(opponent_score)
     else:
         return roll_dice(num_rolls, dice);
-    # END PROBLEM 3
+
 
 
 def extra_turn(player_score, opponent_score):
@@ -90,13 +83,11 @@ def swine_align(player_score, opponent_score):
     >>> swine_align(35, 45)  # The GCD is 5.
     False
     """
-    # BEGIN PROBLEM 4a
-    "*** YOUR CODE HERE ***"
     number_gcd = math.gcd(player_score, opponent_score)
     if player_score != 0 and opponent_score != 0 and number_gcd >= 10:
         return True
     return False
-    # END PROBLEM 4a
+
 
 
 def pig_pass(player_score, opponent_score):
@@ -116,13 +107,11 @@ def pig_pass(player_score, opponent_score):
     >>> pig_pass(13, 12)
     False
     """
-    # BEGIN PROBLEM 4b
-    "*** YOUR CODE HERE ***"
     gap = opponent_score - player_score
     if gap > 0 and gap < 3:
         return True
     return False
-    # END PROBLEM 4b
+
 
 
 def other(who):
@@ -158,8 +147,6 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     say:        The commentary function to call at the end of the first turn.
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
-    # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
     while score0 < goal and score1 < goal:
        if who == 0:
             numRolls = strategy0(score0, score1)
@@ -173,12 +160,6 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
             say = say(score0, score1)
             if not extra_turn(score1, score0):
                 who = other(who)
-
-    # END PROBLEM 5
-    # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
-    # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 6
     return score0, score1
 
 
@@ -260,8 +241,6 @@ def announce_highest(who, last_score=0, running_high=0):
     30 point(s)! The most yet for Player 1
     """
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
-    # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
     def say(score0, score1):
         current_score = score0 if who == 0 else score1
         gain = current_score - last_score
@@ -271,7 +250,7 @@ def announce_highest(who, last_score=0, running_high=0):
         else:
             return announce_highest(who, current_score, running_high)
     return say
-    # END PROBLEM 7
+
 
 
 #######################
@@ -309,15 +288,13 @@ def make_averaged(original_function, trials_count=1000):
     >>> averaged_dice()
     3.0
     """
-    # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
     def helper(*args):
         total = 0
         for _ in range(trials_count):
             total += original_function(*args)
         return total / trials_count
     return helper
-    # END PROBLEM 8
+
 
 
 def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
@@ -329,8 +306,6 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     >>> max_scoring_num_rolls(dice)
     1
     """
-    # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
     # Initialize variables to keep track of the best scoring number of rolls
     max_average_score = 0
     first_roll = 1 # Start at 1, since you can't roll zero dice
@@ -345,7 +320,7 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
             max_average_score = average_score_this_roll
             first_roll = i
     return first_roll
-    # END PROBLEM 9
+
 
 
 def winner(strategy0, strategy1):
@@ -396,13 +371,12 @@ def bacon_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     """This strategy rolls 0 dice if that gives at least CUTOFF points, and
     rolls NUM_ROLLS otherwise.
     """
-    # BEGIN PROBLEM 10
     gain_if_piggy = free_bacon(opponent_score)
     if gain_if_piggy >= cutoff:
         return 0
     else:
         return num_rolls
-    # END PROBLEM 10
+
 
 
 def extra_turn_strategy(score, opponent_score, cutoff=8, num_rolls=6):
@@ -410,12 +384,11 @@ def extra_turn_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     rolls 0 dice if it gives at least CUTOFF points and does not give an extra turn.
     Otherwise, it rolls NUM_ROLLS.
     """
-    # BEGIN PROBLEM 11
     potential_score = score + free_bacon(opponent_score)
     if extra_turn(potential_score, opponent_score):
         return 0
     return bacon_strategy(score, opponent_score, cutoff, num_rolls)
-    # END PROBLEM 11
+
 
 
 def final_strategy(score, opponent_score):
@@ -423,7 +396,6 @@ def final_strategy(score, opponent_score):
 
     *** YOUR DESCRIPTION HERE ***
     """
-    # BEGIN PROBLEM 12
     """
     A strategy that optimizes moves based on the game's progress, opponent's score,
     and nearing the winning score.
@@ -448,7 +420,7 @@ def final_strategy(score, opponent_score):
         return max(base_strategy - 1, 1)
 
     return base_strategy
-    # END PROBLEM 12
+
 
 ##########################
 # Command Line Interface #
